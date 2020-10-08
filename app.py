@@ -42,15 +42,20 @@ def completed ():
 @app.route("/done")  
 def done ():  
         #Done-or-not ICON  
+    # people = reqeust.form.getlist('people')
+    # print(people)
     id=request.values.get("_id")  
     task=todos.find({"_id":ObjectId(id)})  
     if(task[0]["done"]=="yes"):  
-        todos.update({"_id":ObjectId(id)}, {"$set": {"done":"no"}})  
+        todos.update({"_id":ObjectId(id)}, 
+                    {"$set": {"done":"no"}})  
     else:  
-        todos.update({"_id":ObjectId(id)}, {"$set": {"done":"yes"}})  
-    redir=redirect_url()      
+        todos.update({"_id":ObjectId(id)},
+                     {"$set": {"done":"yes"}})  
+    # redir=redirect_url()      
       
-    return redirect(redir)  
+    # return redirect(redir)  
+    return redirect("/")
      
 @app.route("/action", methods=['POST'])  
 def action ():  
@@ -75,6 +80,7 @@ def update ():
     task=todos.find({"_id":ObjectId(id)})  
     return render_template('update.html',tasks=task,h=heading,t=title)  
      
+
 @app.route("/action3", methods=['POST'])  
 def action3 ():  
         #Updating a Task with various references  
@@ -83,7 +89,8 @@ def action3 ():
     date=request.values.get("date")  
     pr=request.values.get("pr")  
     id=request.values.get("_id")  
-    todos.update({"_id":ObjectId(id)}, {'$set':{ "name":name, "desc":desc, "date":date, "pr":pr }})  
+    todos.update({"_id":ObjectId(id)}, 
+                {'$set':{ "name":name, "desc":desc, "date":date, "pr":pr }})  
     return redirect("/")  
      
 @app.route("/search", methods=['GET'])  
@@ -100,4 +107,4 @@ def search():
       
 if __name__ == "__main__":  
       
-    app.run(debug=True , port=300)  
+    app.run(debug=True )  
